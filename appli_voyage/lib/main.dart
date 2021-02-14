@@ -1,8 +1,6 @@
 import 'package:appli_voyage/views/home/city/widgets/city.dart';
 import 'package:flutter/material.dart';
 
-import 'views/home/home.dart';
-
 main() {
   runApp(DymaTrip());
 }
