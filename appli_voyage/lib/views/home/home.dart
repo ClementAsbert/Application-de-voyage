@@ -1,3 +1,4 @@
+import '../../models/city_model.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/cityCard.dart';
@@ -11,17 +12,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List cities = [
-    {'name': 'Paris', 'image': 'assets/images/Paris.jpg', 'checked': false},
-    {'name': 'Lyon', 'image': 'assets/images/Lyon.jpg', 'checked': false},
-    {'name': 'Lille', 'image': 'assets/images/Lille.jpg', 'checked': false},
+    CityModel(name: 'Paris', image: 'assets/images/Paris.jpg'),
+    CityModel(name: 'Lyon', image: 'assets/images/Lyon.jpg'),
+    CityModel(name: 'Lille', image: 'assets/images/Lille.jpg'),
   ];
-
-  void switchChecked(city) {
-    int index = cities.indexOf(city);
-    setState(() {
-      cities[index]['checked'] = !cities[index]['checked'];
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +32,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             ...cities.map((city) {
               return City(
-                name: city['name'],
-                image: city['image'],
-                checked: city['checked'],
-                updateChecked: () {
-                  switchChecked(city);
-                },
+                city: city,
               );
             })
           ],

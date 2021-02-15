@@ -1,12 +1,12 @@
+import 'package:appli_voyage/views/home/city/widgets/city.dart';
+
+import '../../../models/city_model.dart';
 import 'package:flutter/material.dart';
 
 class City extends StatelessWidget {
-  final String name;
-  final String image;
-  final bool checked;
-  final Function updateChecked;
+  final CityModel city;
 
-  City({this.name, this.image, this.checked, this.updateChecked});
+  City({this.city});
 
   @override
   Widget build(BuildContext context) {
@@ -19,40 +19,33 @@ class City extends StatelessWidget {
           children: <Widget>[
             Ink.image(
               fit: BoxFit.cover,
-              image: AssetImage(image),
+              image: AssetImage(city.image),
               child: InkWell(
-                onTap: updateChecked,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Citys();
+                      },
+                    ),
+                  );
+                },
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          checked ? Icons.star : Icons.star_border,
-                          color: Colors.white,
-                          size: 40.00,
-                        ),
-                      ],
-                    ),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                color: Colors.black54,
+                child: Text(
+                  city.name,
+                  style: TextStyle(
+                    fontSize: 35,
+                    color: Colors.white,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             )
           ],

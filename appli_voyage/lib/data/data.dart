@@ -1,4 +1,4 @@
-import 'package:appli_voyage/models/activity.model.dart';
+import 'package:appli_voyage/models/activity_model.dart';
 
 List<Activity> activities = [
   Activity(

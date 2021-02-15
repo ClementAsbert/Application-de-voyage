@@ -1,6 +1,6 @@
-import 'package:appli_voyage/models/activity.model.dart';
+import 'package:appli_voyage/models/activity_model.dart';
 import 'package:flutter/material.dart';
-import '../../../../models/activity.model.dart';
+import '../../../../models/activity_model.dart';
 
 class ActivityCard extends StatelessWidget {
   final Activity activity;

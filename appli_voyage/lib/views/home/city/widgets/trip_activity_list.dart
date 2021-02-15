@@ -1,6 +1,6 @@
 import 'package:appli_voyage/views/home/city/widgets/trip_activity_card.dart';
 import 'package:flutter/material.dart';
-import '../../../../models/activity.model.dart';
+import '../../../../models/activity_model.dart';
 
 class TripActivityList extends StatelessWidget {
   final List<Activity> activities;

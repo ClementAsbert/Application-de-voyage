@@ -1,11 +1,10 @@
 import 'package:appli_voyage/views/home/city/widgets/trip_activity_list.dart';
-import '../../../../widgets/data.dart';
 
-import '../../../../models/trip.model.dart';
+import '../../../../models/trip_model.dart';
 import '../widgets/activity_list.dart';
 import '../widgets/trip_overview.dart';
 
-import '../../../../models/activity.model.dart';
+import '../../../../models/activity_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/data.dart' as data;
@@ -34,7 +33,6 @@ class Citys extends StatefulWidget {
 class _CitysState extends State<Citys> with WidgetsBindingObserver {
   Trip myTrip;
   int index;
-  List<Activity> activities;
 
   @override
   void initState() {
@@ -44,14 +42,8 @@ class _CitysState extends State<Citys> with WidgetsBindingObserver {
     myTrip = Trip(activities: [], date: null, city: 'Paris');
   }
 
-  @override
-  didChangeDependencies() {
-    super.didChangeDependencies();
-    activities = Data.of(context).activities;
-  }
-
   List<Activity> get tripActivities {
-    return activities.where((activity) {
+    return widget.activities.where((activity) {
       return myTrip.activities.contains(activity.id);
     }).toList();
   }
@@ -125,7 +117,7 @@ class _CitysState extends State<Citys> with WidgetsBindingObserver {
             Expanded(
               child: index == 0
                   ? ActivityList(
-                      activities: activities,
+                      activities: widget.activities,
                       selectedActivities: myTrip.activities,
                       toggleActivity: toggleActivity)
                   : TripActivityList(
