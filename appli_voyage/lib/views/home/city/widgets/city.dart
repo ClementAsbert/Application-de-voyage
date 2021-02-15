@@ -13,11 +13,25 @@ import '../../../../data/data.dart' as data;
 class Citys extends StatefulWidget {
   final List<Activity> activities = data.activities;
 
+  showContext({BuildContext context, List<Widget> children}) {
+    var orientation = MediaQuery.of(context).orientation;
+    if (orientation == Orientation.landscape) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      );
+    } else {
+      return Column(
+        children: children,
+      );
+    }
+  }
+
   @override
   _CitysState createState() => _CitysState();
 }
 
-class _CitysState extends State<Citys> {
+class _CitysState extends State<Citys> with WidgetsBindingObserver {
   Trip myTrip;
   int index;
   List<Activity> activities;
@@ -25,6 +39,7 @@ class _CitysState extends State<Citys> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     index = 0;
     myTrip = Trip(activities: [], date: null, city: 'Paris');
   }
@@ -39,6 +54,18 @@ class _CitysState extends State<Citys> {
     return activities.where((activity) {
       return myTrip.activities.contains(activity.id);
     }).toList();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   void setDate() {
@@ -88,7 +115,8 @@ class _CitysState extends State<Citys> {
         ],
       ),
       body: Container(
-        child: Column(
+        child: widget.showContext(
+          context: context,
           children: [
             TripOverview(
               myTrip: myTrip,
