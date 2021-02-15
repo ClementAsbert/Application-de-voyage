@@ -1,4 +1,5 @@
 import 'package:appli_voyage/views/home/city/widgets/trip_activity_list.dart';
+import '../../../../widgets/data.dart';
 
 import '../../../../models/trip.model.dart';
 import '../widgets/activity_list.dart';
@@ -17,8 +18,28 @@ class Citys extends StatefulWidget {
 }
 
 class _CitysState extends State<Citys> {
-  Trip myTrip = Trip(activities: [], city: 'Paris', date: DateTime.now());
-  int index = 0;
+  Trip myTrip;
+  int index;
+  List<Activity> activities;
+
+  @override
+  void initState() {
+    super.initState();
+    index = 0;
+    myTrip = Trip(activities: [], date: null, city: 'Paris');
+  }
+
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    activities = Data.of(context).activities;
+  }
+
+  List<Activity> get tripActivities {
+    return activities.where((activity) {
+      return myTrip.activities.contains(activity.id);
+    }).toList();
+  }
 
   void setDate() {
     showDatePicker(
@@ -42,6 +63,20 @@ class _CitysState extends State<Citys> {
     });
   }
 
+  void toggleActivity(String id) {
+    setState(() {
+      myTrip.activities.contains(id)
+          ? myTrip.activities.remove(id)
+          : myTrip.activities.add(id);
+    });
+  }
+
+  void deleteTripActivity(String id) {
+    setState(() {
+      myTrip.activities.remove(id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,9 +95,16 @@ class _CitysState extends State<Citys> {
               setDate: setDate,
             ),
             Expanded(
-                child: index == 0
-                    ? ActivityList(activities: widget.activities)
-                    : TripActivityList()),
+              child: index == 0
+                  ? ActivityList(
+                      activities: activities,
+                      selectedActivities: myTrip.activities,
+                      toggleActivity: toggleActivity)
+                  : TripActivityList(
+                      activities: tripActivities,
+                      deleteTripActivity: deleteTripActivity,
+                    ),
+            ),
           ],
         ),
       ),

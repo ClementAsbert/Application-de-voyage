@@ -5,7 +5,10 @@ import 'activity_card.dart';
 
 class ActivityList extends StatelessWidget {
   final List<Activity> activities;
-  ActivityList({this.activities});
+  final List<String> selectedActivities;
+  final Function toggleActivity;
+
+  ActivityList({this.activities, this.selectedActivities, this.toggleActivity});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +18,11 @@ class ActivityList extends StatelessWidget {
       crossAxisCount: 2,
       children: activities
           .map((activity) => ActivityCard(
-                activity: activity,
-              ))
+              activity: activity,
+              isSelected: selectedActivities.contains(activity.id),
+              toggleActivity: () {
+                toggleActivity(activity.id);
+              }))
           .toList(),
     );
   }
