@@ -1,3 +1,8 @@
+import 'dart:ui';
+
+import '../../../../widgets/drawer.dart';
+
+import '../../../../models/city_model.dart';
 import 'package:appli_voyage/views/home/city/widgets/trip_activity_list.dart';
 
 import '../../../../models/trip_model.dart';
@@ -7,10 +12,16 @@ import '../widgets/trip_overview.dart';
 import '../../../../models/activity_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../data/data.dart' as data;
-
 class Citys extends StatefulWidget {
-  final List<Activity> activities = data.activities;
+  static const String routeName = '/city';
+  final CityModel city;
+  final Function addTrip;
+
+  List<Activity> get activities {
+    return city.activities;
+  }
+
+  Citys({this.city, this.addTrip});
 
   showContext({BuildContext context, List<Widget> children}) {
     var orientation = MediaQuery.of(context).orientation;
@@ -96,23 +107,75 @@ class _CitysState extends State<Citys> with WidgetsBindingObserver {
     });
   }
 
+  double get amount {
+    return myTrip.activities.fold(0.0, (prev, element) {
+      var activity =
+          widget.activities.firstWhere((activity) => activity.id == element);
+      return prev + activity.price;
+    });
+  }
+
+  void saveTrip() async {
+    final result = await showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: const Text(
+            'Voulez vous save ?',
+            textAlign: TextAlign.center,
+          ),
+          contentPadding: const EdgeInsets.all(20),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'save');
+                  },
+                  child: const Text(
+                    'sauvegarder',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'cancel');
+                  },
+                  child: const Text('annuler'),
+                )
+              ],
+            ),
+          ],
+        );
+      },
+    );
+    if (result == 'save') {
+      widget.addTrip(myTrip);
+      Navigator.pushNamed(context, '/');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.chevron_left),
-        title: Text('Organisation voyage'),
-        actions: [
-          Icon(Icons.more_vert),
-        ],
+        title: const Text('Organisation voyage'),
       ),
+      drawer: const DymaDrawer(),
       body: Container(
         child: widget.showContext(
           context: context,
           children: [
             TripOverview(
+              cityName: widget.city.name,
               myTrip: myTrip,
               setDate: setDate,
+              amount: amount,
             ),
             Expanded(
               child: index == 0
@@ -128,15 +191,19 @@ class _CitysState extends State<Citys> with WidgetsBindingObserver {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.save_alt),
+        onPressed: saveTrip,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
+          const BottomNavigationBarItem(
+            icon: const Icon(Icons.map),
             label: ('Découvete'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.stars),
+          const BottomNavigationBarItem(
+            icon: const Icon(Icons.stars),
             label: ('Mes activites'),
           ),
         ],

@@ -5,12 +5,10 @@ import 'package:intl/intl.dart';
 class TripOverview extends StatelessWidget {
   final Function setDate;
   final Trip myTrip;
+  final String cityName;
+  final double amount;
 
-  double get amount {
-    return 0;
-  }
-
-  TripOverview({this.setDate, this.myTrip});
+  TripOverview({this.setDate, this.myTrip, this.cityName, this.amount});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,7 @@ class TripOverview extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       height: 200,
       width: orientation == Orientation.landscape
           ? size.width * 0.5
@@ -28,13 +26,13 @@ class TripOverview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Paris',
-            style: TextStyle(
+            cityName,
+            style: const TextStyle(
               fontSize: 25,
               decoration: TextDecoration.underline,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Row(
@@ -44,15 +42,15 @@ class TripOverview extends StatelessWidget {
                   myTrip.date != null
                       ? DateFormat("d/M/y").format(myTrip.date)
                       : 'Choisissez une date ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 ),
               ),
               RaisedButton(
-                child: Text(
+                child: const Text(
                   'selectionner une date',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                   ),
                 ),
@@ -60,22 +58,22 @@ class TripOverview extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Row(
             children: [
               Expanded(
-                child: Text(
+                child: const Text(
                   'Montant / personne',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 ),
               ),
               Text(
                 '$amount \€',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

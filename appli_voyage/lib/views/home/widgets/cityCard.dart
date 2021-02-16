@@ -22,13 +22,10 @@ class City extends StatelessWidget {
               image: AssetImage(city.image),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return Citys();
-                      },
-                    ),
+                    '/city',
+                    arguments: city,
                   );
                 },
               ),
@@ -37,11 +34,12 @@ class City extends StatelessWidget {
               top: 10,
               left: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 color: Colors.black54,
                 child: Text(
                   city.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 35,
                     color: Colors.white,
                   ),
